@@ -1,52 +1,76 @@
-var path,boy, leftBoundary,rightBoundary;
-var pathImg,boyImg;
-var i;
+var garden,rabbit,apple,orangeL,redL;
+var gardenImg,rabbitImg,carrotImg,orangeImg,redImg;
+
 
 function preload(){
-  pathImg = loadImage("path.png");
-  boyImg = loadAnimation("Runner-1.png","Runner-2.png");
+  gardenImg = loadImage("garden.png");
+  rabbitImg = loadImage("rabbit.png");
+  appleImg = loadImage("apple.png");
+  orangeImg = loadImage("orangeLeaf.png");
+  redImg = loadImage("redImage.png");
 }
+
 
 function setup(){
   
   createCanvas(400,400);
-  
-// Mover el fondo
-path=createSprite(200,200);
-path.addImage(pathImg);
-path.velocityY = 4;
-path.scale=1.2;
+//Mover el suelo
+garden=createSprite(200,200);
+garden.addImage(gardenImg);
 
-//crear sprite boy (niño) corriendo
-boy = createSprite(180,340,30,30);
-boy.scale=0.08;
-boy.addAnimation("JakeRunning",boyImg);
-  
-// crear left Boundary (límite izquierdo)
-leftBoundary=createSprite(0,0,100,800);
-leftBoundary.visible = false;
 
-//crear right Boundary (límite derecho)
-rightBoundary=createSprite(410,0,100,800);
-rightBoundary.visible = false;
+//crear sprite rabbit (conejo)
+rabbit = createSprite(160,340,20,20);
+rabbit.scale =0.09;
+rabbit.addImage(rabbitImg);
 }
 
 function draw() {
   background(0);
-  path.velocityY = 4;
   
-  // el niño se mueve en el eje x con el mouse
-  boy.x = World.mouseX;
+  //mover rabbit (conejo) en el eje x con el mouse
+  rabbit.x = World.mouseX;
   
   edges= createEdgeSprites();
-  boy.collide(edges[3]);
-  boy.collide(leftBoundary);
-  boy.collide(rightBoundary);
+  rabbit.collide(edges);
   
-  //código para reiniciar el fondo
-  if(path.y > 400 ){
-    path.y = height/2;
+   drawSprites();
+  
+  var select_sprites = Math.round(random(1,3));
+  
+  if (frameCount % 80 == 0) {
+    if (select_sprites == 1) {
+      createApples();
+    } else if (select_sprites == 2) {
+      createOrange();
+    }else {
+      createRed();
+    }
   }
+
+}
+
+function createApples() {
+apple = createSprite(random(50, 350),40, 10, 10);
+apple.addImage(appleImg);
+apple.scale=0.07;
+apple.velocityY = 3;
+apple.lifetime = 150;
   
-  drawSprites();
+}
+
+function createOrange() {
+orangeL = createSprite(random(50, 350),40, 10, 10);
+orangeL.addImage(orangeImg);
+orangeL.scale=0.08;
+orangeL.velocityY = 3;
+orangeL.lifetime = 150;
+}
+
+function createRed() {
+redL = createSprite(random(50, 350),40, 10, 10);
+redL.addImage(redImg);
+redL.scale=0.06;
+  redL.velocityY = 3;
+  redL.lifetime = 150;
 }
